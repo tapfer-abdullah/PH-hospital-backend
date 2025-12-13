@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
-const port = process.env.PORT || 5000;
+const port = envConfig.PORT || 5000;
 
 app.get("/", (req: Request, res: Response) => {
   res.json({
@@ -24,6 +24,7 @@ import allRoutes from "./app/routes/index.ts";
 import { extractReqInfo } from "./app/middlewares/extractReqInfo.ts";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler.ts";
 import apiNotFound from "./app/middlewares/apiNotFound.ts";
+import envConfig from "./app/config/index.ts";
 
 // all routes
 app.use("/api/v1", extractReqInfo, allRoutes);

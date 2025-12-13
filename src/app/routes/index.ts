@@ -2,6 +2,8 @@ import express from "express";
 import adminRoutes from "../modules/admin/admin.routes.ts";
 import userRoutes from "../modules/user/user.routes.ts";
 import authRoutes from "../modules/auth/auth.routes.ts";
+import { UserRole } from "../../../generated/prisma/enums.ts";
+import authMiddleware from "../middlewares/authMiddleware.ts";
 
 const router = express.Router();
 
@@ -9,7 +11,7 @@ const moduleRoutes = [
   {
     path: "/admin",
     route: adminRoutes,
-    middlewares: [],
+    middlewares: [authMiddleware(UserRole.SUPER_ADMIN, UserRole.ADMIN)],
   },
   {
     path: "/user",
