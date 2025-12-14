@@ -6,6 +6,8 @@ import { calculatePagination } from "../../utils/paginationHelper.ts";
 import type { Admin } from "../../../../generated/prisma/client.ts";
 import type { IAdminFilterRequest } from "./admin.interfaces.ts";
 import type { IPaginationOptions } from "../../interfaces/pagination.ts";
+import type { Request } from "express";
+import { uploadImageToCloudinary } from "../../utils/cloudinaryFileUploader.ts";
 
 export const createAdmin = async (data: any) => {
   const hashedPassword = await bcrypt.hash(data.password, 10);
@@ -101,8 +103,24 @@ export const getSingleAdmin = async (id: string) => {
 
 export const updateAdmin = async (
   id: string,
-  data: Partial<Admin>
+  req: Request
 ): Promise<Admin | null> => {
+  const data = req.body;
+  const file = req.file;
+
+  if (file) {
+    const uploadedFileRes = await uploadImageToCloudinary(
+      file,
+      "AK-HealthCare/Admins"
+    );
+
+    if (uploadedFileRes) {
+      data.profilePhoto = uploadedFileRes;
+    } else {
+      throw new Error("Failed to upload profile photo");
+    }
+  }
+
   const isExist = await prisma.admin.findUnique({
     where: { id },
   });

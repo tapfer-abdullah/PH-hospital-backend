@@ -36,9 +36,9 @@ const envConfig = {
     MAIL_PASS: process.env.MAIL_PASS,
   },
   CLOUDINARY: {
-    CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
-    API_KEY: process.env.CLOUDINARY_API_KEY,
-    API_SECRET: process.env.CLOUDINARY_API_SECRET,
+    CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME as string,
+    API_KEY: process.env.CLOUDINARY_API_KEY as string,
+    API_SECRET: process.env.CLOUDINARY_API_SECRET as string,
   },
 };
 

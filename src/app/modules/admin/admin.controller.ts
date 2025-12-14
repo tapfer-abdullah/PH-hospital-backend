@@ -77,10 +77,7 @@ export const getSingleAdmin = catchAsync(
 
 export const updateAdmin = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const results = await serviceFile.updateAdmin(
-      req.params.id as string,
-      req.body
-    );
+    const results = await serviceFile.updateAdmin(req.params.id as string, req);
 
     return sendResponse(res, {
       code: StatusCodes.OK,
