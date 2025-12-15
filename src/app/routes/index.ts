@@ -1,26 +1,34 @@
 import express from "express";
-import adminRoutes from "../modules/admin/admin.routes.ts";
-import userRoutes from "../modules/user/user.routes.ts";
-import authRoutes from "../modules/auth/auth.routes.ts";
+
 import { UserRole } from "../../../generated/prisma/enums.ts";
 import authMiddleware from "../middlewares/authMiddleware.ts";
+
+import authRoutes from "../modules/auth/auth.routes.ts";
+import userRoutes from "../modules/user/user.routes.ts";
+import adminRoutes from "../modules/admin/admin.routes.ts";
+import doctorRoutes from "../modules/doctor/doctor.routes.ts";
 
 const router = express.Router();
 
 const moduleRoutes = [
   {
-    path: "/admin",
-    route: adminRoutes,
-    middlewares: [authMiddleware(UserRole.SUPER_ADMIN, UserRole.ADMIN)],
+    path: "/auth",
+    route: authRoutes,
+    middlewares: [],
   },
   {
-    path: "/user",
+    path: "/users",
     route: userRoutes,
     middlewares: [],
   },
   {
-    path: "/auth",
-    route: authRoutes,
+    path: "/admins",
+    route: adminRoutes,
+    middlewares: [authMiddleware(UserRole.SUPER_ADMIN, UserRole.ADMIN)],
+  },
+  {
+    path: "/doctors",
+    route: doctorRoutes,
     middlewares: [],
   },
 ];

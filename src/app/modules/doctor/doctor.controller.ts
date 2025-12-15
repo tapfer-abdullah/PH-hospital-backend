@@ -1,25 +1,34 @@
 import type { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import * as serviceFile from "./admin.service.ts";
+import * as serviceFile from "./doctor.service.ts";
 import { sendResponse } from "../../utils/sendResponse.ts";
 import catchAsync from "../../utils/catchAsync.ts";
 import pick from "../../utils/pick.ts";
 
-export const createAdmin = catchAsync(
+export const createDoctor = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await serviceFile.createAdmin(req.body);
+    const result = await serviceFile.createDoctor(req.body);
     return sendResponse(res, {
       code: StatusCodes.CREATED,
-      message: "Admin created successfully",
+      message: "Doctor created successfully",
       success: true,
       data: result,
     });
   }
 );
 
-export const getAdmins = catchAsync(
+export const getDoctors = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const searchQuery = pick(req.query, ["search", "email", "contactNumber"]);
+    const searchQuery = pick(req.query, [
+      "search",
+      "email",
+      "contactNumber",
+      "currentWorkplace",
+      "experience",
+      "gender",
+      "qualification",
+      "appointmentFee",
+    ]);
     const paginationQuery = pick(req.query, [
       "currentPage",
       "limit",
@@ -27,11 +36,11 @@ export const getAdmins = catchAsync(
       "sortOrder",
     ]);
 
-    const results = await serviceFile.getAdmins(searchQuery, paginationQuery);
+    const results = await serviceFile.getDoctors(searchQuery, paginationQuery);
 
     return sendResponse(res, {
       code: StatusCodes.OK,
-      message: "Admins retrieved successfully",
+      message: "Doctors retrieved successfully",
       success: true,
       data: results.data,
       pagination: results.pagination,
@@ -39,14 +48,16 @@ export const getAdmins = catchAsync(
   }
 );
 
-export const getSingleAdmin = catchAsync(
+export const getSingleDoctor = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const results = await serviceFile.getSingleAdmin(req.params.id as string);
+      const results = await serviceFile.getSingleDoctor(
+        req.params.id as string
+      );
 
       return sendResponse(res, {
         code: StatusCodes.OK,
-        message: "Admin retrieved successfully",
+        message: "Doctor retrieved successfully",
         success: true,
         data: results,
       });
@@ -56,36 +67,39 @@ export const getSingleAdmin = catchAsync(
   }
 );
 
-export const updateAdmin = catchAsync(
+export const updateDoctor = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const results = await serviceFile.updateAdmin(req.params.id as string, req);
+    const results = await serviceFile.updateDoctor(
+      req.params.id as string,
+      req
+    );
 
     return sendResponse(res, {
       code: StatusCodes.OK,
-      message: "Admin updated successfully",
+      message: "Doctor updated successfully",
       success: true,
       data: results,
     });
   }
 );
 
-export const deleteAdmin = catchAsync(
+export const deleteDoctor = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const results = await serviceFile.deleteAdmin(req.params.id as string);
+    const results = await serviceFile.deleteDoctor(req.params.id as string);
     return sendResponse(res, {
       code: StatusCodes.OK,
       success: true,
-      message: "Admin deleted successfully",
+      message: "Doctor deleted successfully",
       data: results,
     });
   }
 );
 
-export const softDeleteAdmin = catchAsync(
+export const softDeleteDoctor = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const results = await serviceFile.softDeleteAdmin(req.params.id as string);
+    const results = await serviceFile.softDeleteDoctor(req.params.id as string);
     return res.status(StatusCodes.OK).json({
-      message: "Admin deleted successfully",
+      message: "Doctor deleted successfully",
       success: true,
       data: results,
     });

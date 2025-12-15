@@ -28,6 +28,12 @@ enum UserStatus {
   DELETED
 }
 
+enum Gender {
+  Male
+  Female
+  Other
+}
+
 // schemas
 model User {
   id                 String     @id @default(uuid())
@@ -39,6 +45,7 @@ model User {
   createdAt          DateTime   @default(now())
   updatedAt          DateTime   @updatedAt
   admin              Admin?
+  doctor             Doctor?
 }
 
 model Admin {
@@ -54,4 +61,27 @@ model Admin {
   user User @relation(fields: [email], references: [email])
 
   @@map("admins")
+}
+
+model Doctor {
+  id                 String   @id @default(uuid())
+  name               String
+  profilePhoto       String?
+  email              String   @unique
+  contactNumber      String
+  address            String?
+  registrationNumber String
+  experience         Int      @default(0)
+  gender             Gender
+  appointmentFee     Int
+  qualification      String
+  currentWorkplace   String
+  designation        String
+  isDeleted          Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  user User @relation(fields: [email], references: [email])
+
+  @@map("doctors")
 }

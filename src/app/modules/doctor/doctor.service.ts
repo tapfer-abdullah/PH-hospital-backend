@@ -1,16 +1,17 @@
 import { UserRole, UserStatus } from "../../../../generated/prisma/enums.ts";
-import type { AdminWhereInput } from "../../../../generated/prisma/models.ts";
+import type { DoctorWhereInput } from "../../../../generated/prisma/models.ts";
 import { prisma } from "../../lib/prisma.ts";
 import bcrypt from "bcrypt";
 import { calculatePagination } from "../../utils/paginationHelper.ts";
-import type { Admin } from "../../../../generated/prisma/client.ts";
-import type { IAdminFilterRequest } from "./admin.interfaces.ts";
+import type { Doctor } from "../../../../generated/prisma/client.ts";
 import type { IPaginationOptions } from "../../interfaces/pagination.ts";
 import type { Request } from "express";
 import { uploadImageToCloudinary } from "../../utils/cloudinaryFileUploader.ts";
 import envConfig from "../../config/index.ts";
+import type { IDoctorFilterRequest } from "./doctor.interfaces.ts";
 
-export const createAdmin = async (data: any) => {
+export const createDoctor = async (data: any) => {
+  console.log("data....", data);
   const hashedPassword = await bcrypt.hash(
     data.password,
     envConfig.BCRYPT_SALT_ROUNDS
@@ -18,25 +19,25 @@ export const createAdmin = async (data: any) => {
   const userData = {
     email: data.data.email,
     password: hashedPassword,
-    role: UserRole.ADMIN,
+    role: UserRole.DOCTOR,
   };
 
   // Simulate database operation
   const result = await prisma.$transaction(async (transaction) => {
     const user = await transaction.user.create({ data: userData });
 
-    const admin = await transaction.admin.create({
+    const doctor = await transaction.doctor.create({
       data: data.data,
     });
 
-    return { user, admin };
+    return { user, doctor };
   });
 
   return result;
 };
 
-export const getAdmins = async (
-  searchQuery: IAdminFilterRequest,
+export const getDoctors = async (
+  searchQuery: IDoctorFilterRequest,
   paginationQuery: IPaginationOptions
 ) => {
   const { search, ...otherFilters } = searchQuery || {};
@@ -44,17 +45,11 @@ export const getAdmins = async (
   const { currentPage, limit, sortBy, sortOrder, skip } =
     calculatePagination(paginationQuery);
 
-  let whereConditions: AdminWhereInput = {};
-  const andConditions: AdminWhereInput[] = [];
-  const searchableFields = ["name", "email"];
+  let whereConditions: DoctorWhereInput = {};
+  const andConditions: DoctorWhereInput[] = [];
+  const searchableFields = ["name", "email", "currentWorkplace"];
 
-  //    {
-  //       OR: [
-  //         { name: { contains: search, mode: "insensitive" } },
-  //         { email: { contains: search, mode: "insensitive" } },
-  //       ],
-  //     }
-
+  // filter by search term
   if (search) {
     andConditions.push({
       OR: searchableFields.map((field) => ({
@@ -76,7 +71,7 @@ export const getAdmins = async (
     whereConditions.AND = andConditions;
   }
 
-  const results = await prisma.admin.findMany({
+  const results = await prisma.doctor.findMany({
     where: whereConditions,
     skip: skip,
     take: limit,
@@ -85,7 +80,7 @@ export const getAdmins = async (
     },
   });
 
-  const totalDocuments = await prisma.admin.count({ where: whereConditions });
+  const totalDocuments = await prisma.doctor.count({ where: whereConditions });
 
   return {
     data: results,
@@ -97,24 +92,24 @@ export const getAdmins = async (
   };
 };
 
-export const getSingleAdmin = async (id: string) => {
-  const admin = await prisma.admin.findUnique({
+export const getSingleDoctor = async (id: string) => {
+  const doctor = await prisma.doctor.findUnique({
     where: { id },
   });
-  return admin;
+  return doctor;
 };
 
-export const updateAdmin = async (
+export const updateDoctor = async (
   id: string,
   req: Request
-): Promise<Admin | null> => {
+): Promise<Doctor | null> => {
   const data = req.body.data;
   const file = req.file;
 
   if (file) {
     const uploadedFileRes = await uploadImageToCloudinary(
       file,
-      "AK-HealthCare/Admins"
+      "AK-HealthCare/Doctors"
     );
 
     if (uploadedFileRes) {
@@ -124,51 +119,51 @@ export const updateAdmin = async (
     }
   }
 
-  const isExist = await prisma.admin.findUnique({
+  const isExist = await prisma.doctor.findUnique({
     where: { id },
   });
 
   if (!isExist) {
-    throw new Error("Admin not found");
+    throw new Error("Doctor not found");
   }
 
-  const updatedAdmin = await prisma.admin.update({
+  const updatedDoctor = await prisma.doctor.update({
     where: { id },
     data,
   });
-  return updatedAdmin;
+  return updatedDoctor;
 };
 
-export const deleteAdmin = async (id: string): Promise<Admin | null> => {
-  await prisma.admin.findUniqueOrThrow({
+export const deleteDoctor = async (id: string): Promise<Doctor | null> => {
+  await prisma.doctor.findUniqueOrThrow({
     where: { id },
   });
 
   const result = await prisma.$transaction(async (transaction) => {
-    const admin = await transaction.admin.delete({
+    const doctor = await transaction.doctor.delete({
       where: { id },
     });
 
     const user = await transaction.user.delete({
-      where: { email: admin.email },
+      where: { email: doctor.email },
     });
 
-    return { admin, user };
+    return { doctor, user };
   });
-  return result.admin;
+  return result.doctor;
 };
 
-export const softDeleteAdmin = async (id: string): Promise<Admin | null> => {
-  const isExist = await prisma.admin.findUnique({
+export const softDeleteDoctor = async (id: string): Promise<Doctor | null> => {
+  const isExist = await prisma.doctor.findUnique({
     where: { id },
   });
 
   if (!isExist) {
-    throw new Error("Admin not found");
+    throw new Error("Doctor not found");
   }
 
   const result = await prisma.$transaction(async (transaction) => {
-    const deleteAdmin = await transaction.admin.update({
+    const deleteDoctor = await transaction.doctor.update({
       where: {
         id,
       },
@@ -179,15 +174,15 @@ export const softDeleteAdmin = async (id: string): Promise<Admin | null> => {
 
     const deleteUser = await transaction.user.update({
       where: {
-        email: deleteAdmin.email,
+        email: deleteDoctor.email,
       },
       data: {
         status: UserStatus.DELETED,
       },
     });
 
-    return { deleteAdmin, deleteUser };
+    return { deleteDoctor, deleteUser };
   });
 
-  return result.deleteAdmin;
+  return result.deleteDoctor;
 };

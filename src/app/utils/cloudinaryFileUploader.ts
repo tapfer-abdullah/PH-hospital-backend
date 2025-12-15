@@ -10,17 +10,6 @@ cloudinary.config({
   api_secret: envConfig.CLOUDINARY.API_SECRET,
 });
 
-// export const uploadToCloudinary = async (filePath: string, folder: string) => {
-//   try {
-//     const result = await cloudinary.uploader.upload(filePath, {
-//         folder: folder,
-//     });
-//     return result;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
 export const deleteFromCloudinary = async (publicId: string) => {
   try {
     const result = await cloudinary.uploader.destroy(publicId);
