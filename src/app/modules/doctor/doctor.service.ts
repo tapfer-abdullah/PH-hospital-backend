@@ -11,7 +11,6 @@ import envConfig from "../../config/index.ts";
 import type { IDoctorFilterRequest } from "./doctor.interfaces.ts";
 
 export const createDoctor = async (data: any) => {
-  console.log("data....", data);
   const hashedPassword = await bcrypt.hash(
     data.password,
     envConfig.BCRYPT_SALT_ROUNDS

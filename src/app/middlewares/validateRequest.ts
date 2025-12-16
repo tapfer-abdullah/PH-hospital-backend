@@ -8,6 +8,7 @@ const validateRequest =
       const validData: any = await schema.parseAsync({
         body: req.body.data,
       });
+
       req.body = { data: validData.body, ...req.body };
       return next();
     } catch (error) {
