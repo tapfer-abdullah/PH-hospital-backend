@@ -9,6 +9,7 @@ import type { Request } from "express";
 import { uploadImageToCloudinary } from "../../utils/cloudinaryFileUploader.ts";
 import envConfig from "../../config/index.ts";
 import type { IDoctorFilterRequest } from "./doctor.interfaces.ts";
+import { fieldUpdateOptions } from "../../constraint/action.ts";
 
 export const createDoctor = async (data: any) => {
   const hashedPassword = await bcrypt.hash(
@@ -94,6 +95,12 @@ export const getDoctors = async (
 export const getSingleDoctor = async (id: string) => {
   const doctor = await prisma.doctor.findUnique({
     where: { id },
+    include: {
+      doctorSpecialties: {
+        include: { specialty: true },
+      },
+      user: { select: { email: true, role: true, status: true } },
+    },
   });
   return doctor;
 };
@@ -102,7 +109,7 @@ export const updateDoctor = async (
   id: string,
   req: Request
 ): Promise<Doctor | null> => {
-  const data = req.body.data;
+  const { specialties, ...data } = req.body.data;
   const file = req.file;
 
   if (file) {
@@ -126,10 +133,53 @@ export const updateDoctor = async (
     throw new Error("Doctor not found");
   }
 
-  const updatedDoctor = await prisma.doctor.update({
-    where: { id },
-    data,
+  const result = await prisma.$transaction(async (transaction) => {
+    if (specialties && specialties.length > 0) {
+      const reqForDelete = specialties.filter(
+        (s: any) => s.action === fieldUpdateOptions.DELETE
+      );
+      const reqForAdd = specialties.filter(
+        (s: any) => s.action === fieldUpdateOptions.ADD
+      );
+
+      if (reqForDelete.length > 0) {
+        for (const specialty of reqForDelete) {
+          await transaction.doctorSpecialty.deleteMany({
+            where: {
+              doctorId: id,
+              specialtyId: specialty.id,
+            },
+          });
+        }
+      }
+
+      if (reqForAdd.length > 0) {
+        for (const specialty of reqForAdd) {
+          await transaction.doctorSpecialty.create({
+            data: {
+              doctorId: id,
+              specialtyId: specialty.id,
+            },
+          });
+        }
+      }
+    }
+
+    await transaction.doctor.update({
+      where: { id },
+      data,
+    });
   });
+
+  const updatedDoctor = await prisma.doctor.findUnique({
+    where: { id },
+    include: {
+      doctorSpecialties: {
+        include: { specialty: true },
+      },
+    },
+  });
+
   return updatedDoctor;
 };
 
