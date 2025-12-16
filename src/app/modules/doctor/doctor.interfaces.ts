@@ -3,9 +3,10 @@ export type IDoctorFilterRequest = {
   name?: string | undefined;
   contactNumber?: string | undefined;
   experience?: number | undefined;
-  specialization?: string | undefined;
   appointmentFee?: number | undefined;
   qualification?: string | undefined;
   currentWorkplace?: string | undefined;
   gender?: string | undefined;
+
+  specialty?: string | undefined;
 };

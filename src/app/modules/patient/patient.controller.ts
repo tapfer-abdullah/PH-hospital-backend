@@ -1,34 +1,34 @@
 import type { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import * as serviceFile from "./doctor.service.ts";
+import * as serviceFile from "./patient.service.ts";
 import { sendResponse } from "../../utils/sendResponse.ts";
 import catchAsync from "../../utils/catchAsync.ts";
 import pick from "../../utils/pick.ts";
-import { doctorFilterableFields } from "./doctor.constraint.ts";
 import { paginationFields } from "../../constraint/pagination.ts";
+import { patientsFilterableFields } from "./patient.constraint.ts";
 
-export const createDoctor = catchAsync(
+export const createPatient = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const result = await serviceFile.createDoctor(req.body);
+    const result = await serviceFile.createPatient(req.body);
     return sendResponse(res, {
       code: StatusCodes.CREATED,
-      message: "Doctor created successfully",
+      message: "Patient created successfully",
       success: true,
       data: result,
     });
   }
 );
 
-export const getDoctors = catchAsync(
+export const getPatients = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const searchQuery = pick(req.query, doctorFilterableFields);
+    const searchQuery = pick(req.query, patientsFilterableFields);
     const paginationQuery = pick(req.query, paginationFields);
 
-    const results = await serviceFile.getDoctors(searchQuery, paginationQuery);
+    const results = await serviceFile.getPatients(searchQuery, paginationQuery);
 
     return sendResponse(res, {
       code: StatusCodes.OK,
-      message: "Doctors retrieved successfully",
+      message: "Patients retrieved successfully",
       success: true,
       data: results.data,
       pagination: results.pagination,
@@ -36,16 +36,16 @@ export const getDoctors = catchAsync(
   }
 );
 
-export const getSingleDoctor = catchAsync(
+export const getSinglePatient = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const results = await serviceFile.getSingleDoctor(
+      const results = await serviceFile.getSinglePatient(
         req.params.id as string
       );
 
       return sendResponse(res, {
         code: StatusCodes.OK,
-        message: "Doctor retrieved successfully",
+        message: "Patient retrieved successfully",
         success: true,
         data: results,
       });
@@ -55,39 +55,41 @@ export const getSingleDoctor = catchAsync(
   }
 );
 
-export const updateDoctor = catchAsync(
+export const updatePatient = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const results = await serviceFile.updateDoctor(
+    const results = await serviceFile.updatePatient(
       req.params.id as string,
       req
     );
 
     return sendResponse(res, {
       code: StatusCodes.OK,
-      message: "Doctor updated successfully",
+      message: "Patient updated successfully",
       success: true,
       data: results,
     });
   }
 );
 
-export const deleteDoctor = catchAsync(
+export const deletePatient = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const results = await serviceFile.deleteDoctor(req.params.id as string);
+    const results = await serviceFile.deletePatient(req.params.id as string);
     return sendResponse(res, {
       code: StatusCodes.OK,
       success: true,
-      message: "Doctor deleted successfully",
+      message: "Patient deleted successfully",
       data: results,
     });
   }
 );
 
-export const softDeleteDoctor = catchAsync(
+export const softDeletePatient = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const results = await serviceFile.softDeleteDoctor(req.params.id as string);
+    const results = await serviceFile.softDeletePatient(
+      req.params.id as string
+    );
     return res.status(StatusCodes.OK).json({
-      message: "Doctor deleted successfully",
+      message: "Patient deleted successfully",
       success: true,
       data: results,
     });

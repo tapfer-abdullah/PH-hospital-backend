@@ -10,6 +10,7 @@ import { uploadImageToCloudinary } from "../../utils/cloudinaryFileUploader.ts";
 import envConfig from "../../config/index.ts";
 import type { IDoctorFilterRequest } from "./doctor.interfaces.ts";
 import { fieldUpdateOptions } from "../../constraint/action.ts";
+import { doctorSearchableFields } from "./doctor.constraint.ts";
 
 export const createDoctor = async (data: any) => {
   const hashedPassword = await bcrypt.hash(
@@ -40,14 +41,14 @@ export const getDoctors = async (
   searchQuery: IDoctorFilterRequest,
   paginationQuery: IPaginationOptions
 ) => {
-  const { search, ...otherFilters } = searchQuery || {};
+  const { search, specialty, ...otherFilters } = searchQuery || {};
 
   const { currentPage, limit, sortBy, sortOrder, skip } =
     calculatePagination(paginationQuery);
 
   let whereConditions: DoctorWhereInput = {};
   const andConditions: DoctorWhereInput[] = [];
-  const searchableFields = ["name", "email", "currentWorkplace"];
+  const searchableFields = doctorSearchableFields;
 
   // filter by search term
   if (search) {
@@ -55,6 +56,19 @@ export const getDoctors = async (
       OR: searchableFields.map((field) => ({
         [field]: { contains: search, mode: "insensitive" },
       })),
+    });
+  }
+
+  // filter by specialty
+  if (specialty && specialty.trim() !== "") {
+    andConditions.push({
+      doctorSpecialties: {
+        some: {
+          specialty: {
+            title: { equals: specialty },
+          },
+        },
+      },
     });
   }
 
@@ -77,6 +91,13 @@ export const getDoctors = async (
     take: limit,
     orderBy: {
       [sortBy]: sortOrder,
+    },
+    include: {
+      doctorSpecialties: {
+        include: {
+          specialty: true,
+        },
+      },
     },
   });
 

@@ -8,6 +8,7 @@ import userRoutes from "../modules/user/user.routes.ts";
 import adminRoutes from "../modules/admin/admin.routes.ts";
 import doctorRoutes from "../modules/doctor/doctor.routes.ts";
 import specialtyRoutes from "../modules/specialty/specialty.routes.ts";
+import patientRoutes from "../modules/patient/patient.routes.ts";
 
 const router = express.Router();
 
@@ -30,6 +31,11 @@ const moduleRoutes = [
   {
     path: "/doctors",
     route: doctorRoutes,
+    middlewares: [],
+  },
+  {
+    path: "/patients",
+    route: patientRoutes,
     middlewares: [],
   },
   {
