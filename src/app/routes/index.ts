@@ -1,14 +1,16 @@
 import express from "express";
 
-import { UserRole } from "../../../generated/prisma/enums.ts";
-import authMiddleware from "../middlewares/authMiddleware.ts";
+import { UserRole } from "../../../generated/prisma/enums.js";
+import authMiddleware from "../middlewares/authMiddleware.js";
 
-import authRoutes from "../modules/auth/auth.routes.ts";
-import userRoutes from "../modules/user/user.routes.ts";
-import adminRoutes from "../modules/admin/admin.routes.ts";
-import doctorRoutes from "../modules/doctor/doctor.routes.ts";
-import specialtyRoutes from "../modules/specialty/specialty.routes.ts";
-import patientRoutes from "../modules/patient/patient.routes.ts";
+import authRoutes from "../modules/auth/auth.routes.js";
+import userRoutes from "../modules/user/user.routes.js";
+import adminRoutes from "../modules/admin/admin.routes.js";
+import doctorRoutes from "../modules/doctor/doctor.routes.js";
+import specialtyRoutes from "../modules/specialty/specialty.routes.js";
+import patientRoutes from "../modules/patient/patient.routes.js";
+import scheduleRoutes from "../modules/schedule/schedule.routes.js";
+import doctorScheduleRoutes from "../modules/doctorSchedule/doctorSchedule.routes.js";
 
 const router = express.Router();
 
@@ -41,6 +43,18 @@ const moduleRoutes = [
   {
     path: "/specialties",
     route: specialtyRoutes,
+    middlewares: [],
+  },
+  {
+    path: "/schedules",
+    route: scheduleRoutes,
+    middlewares: [
+      // authMiddleware(UserRole.SUPER_ADMIN, UserRole.ADMIN)
+    ],
+  },
+  {
+    path: "/doctor-schedules",
+    route: doctorScheduleRoutes,
     middlewares: [],
   },
 ];

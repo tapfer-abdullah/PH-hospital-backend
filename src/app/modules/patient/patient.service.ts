@@ -250,6 +250,24 @@ export const deletePatient = async (id: string): Promise<Patient | null> => {
   });
 
   const result = await prisma.$transaction(async (transaction) => {
+    //TODO: handle delete cloudinary files
+
+    await transaction.patientHealthData.delete({
+      where: { patientId: id },
+    });
+
+    await transaction.medicalReport.deleteMany({
+      where: { patientId: id },
+    });
+
+    await transaction.appointment.deleteMany({
+      where: { patientId: id },
+    });
+
+    await transaction.prescription.deleteMany({
+      where: { patientId: id },
+    });
+
     const patient = await transaction.patient.delete({
       where: { id },
     });

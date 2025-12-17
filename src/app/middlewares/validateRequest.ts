@@ -5,6 +5,7 @@ const validateRequest =
   (schema: z.ZodTypeAny) =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log(req.body.data);
       const validData: any = await schema.parseAsync({
         body: req.body.data,
       });
