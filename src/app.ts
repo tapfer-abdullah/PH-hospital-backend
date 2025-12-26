@@ -20,11 +20,11 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
-import allRoutes from "./app/routes/index.ts";
-import { extractReqInfo } from "./app/middlewares/extractReqInfo.ts";
-import globalErrorHandler from "./app/middlewares/globalErrorHandler.ts";
-import apiNotFound from "./app/middlewares/apiNotFound.ts";
-import envConfig from "./app/config/index.ts";
+import allRoutes from "./app/routes/index.js";
+import { extractReqInfo } from "./app/middlewares/extractReqInfo.js";
+import globalErrorHandler from "./app/middlewares/globalErrorHandler.js";
+import apiNotFound from "./app/middlewares/apiNotFound.js";
+import envConfig from "./app/config/index.js";
 
 // all routes
 app.use("/api/v1", extractReqInfo, allRoutes);

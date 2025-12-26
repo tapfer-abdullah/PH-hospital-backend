@@ -1,8 +1,8 @@
 import { v2 as cloudinary } from "cloudinary";
-import envConfig from "../config/index.ts";
+import envConfig from "../config/index.js";
 import fs from "fs";
-import type { ICloudinary } from "../interfaces/cloudinary.ts";
-import type { IFile } from "../interfaces/file.ts";
+import type { ICloudinary } from "../interfaces/cloudinary.js";
+import type { IFile } from "../interfaces/file.js";
 
 cloudinary.config({
   cloud_name: envConfig.CLOUDINARY.CLOUD_NAME,
@@ -62,7 +62,7 @@ export const getCloudinaryPublicId = (input: string): string | null => {
     s = s.replace(/^(image|video|raw)\/upload\/([^/]+\/)*/, ""); // fallback if no version
 
     // Drop query/hash if any (in case input was not parsed as URL)
-    s = s.split("?")[0].split("#")[0];
+    s = (s.split("?")[0] || "").split("#")[0] || "";
 
     // Remove file extension (jpg/png/webp/etc)
     s = s.replace(/\.[^/.]+$/, "");

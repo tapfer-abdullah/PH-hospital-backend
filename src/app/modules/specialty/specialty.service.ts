@@ -1,12 +1,12 @@
-import type { SpecialtyWhereInput } from "../../../../generated/prisma/models.ts";
-import { prisma } from "../../lib/prisma.ts";
-import { calculatePagination } from "../../utils/paginationHelper.ts";
-import type { Specialty } from "../../../../generated/prisma/client.ts";
-import type { IPaginationOptions } from "../../interfaces/pagination.ts";
+import type { SpecialtyWhereInput } from "../../../../generated/prisma/models.js";
+import { prisma } from "../../lib/prisma.js";
+import { calculatePagination } from "../../utils/paginationHelper.js";
+import type { Specialty } from "../../../../generated/prisma/client.js";
+import type { IPaginationOptions } from "../../interfaces/pagination.js";
 import type { Request } from "express";
-import { uploadImageToCloudinary } from "../../utils/cloudinaryFileUploader.ts";
-import { specialtySearchableFields } from "./specialty.constraint.ts";
-import type { ISpecialtyFilterRequest } from "./specialty.interfaces.ts";
+import { uploadImageToCloudinary } from "../../utils/cloudinaryFileUploader.js";
+import { specialtySearchableFields } from "./specialty.constraint.js";
+import type { ISpecialtyFilterRequest } from "./specialty.interfaces.js";
 
 export const createSpecialty = async (
   req: Request

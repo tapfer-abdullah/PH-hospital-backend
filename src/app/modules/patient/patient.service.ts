@@ -1,21 +1,21 @@
-import { UserRole, UserStatus } from "../../../../generated/prisma/enums.ts";
-import { prisma } from "../../lib/prisma.ts";
+import { UserRole, UserStatus } from "../../../../generated/prisma/enums.js";
+import { prisma } from "../../lib/prisma.js";
 import bcrypt from "bcrypt";
-import { calculatePagination } from "../../utils/paginationHelper.ts";
-import type { Patient } from "../../../../generated/prisma/client.ts";
-import type { IPaginationOptions } from "../../interfaces/pagination.ts";
+import { calculatePagination } from "../../utils/paginationHelper.js";
+import type { Patient } from "../../../../generated/prisma/client.js";
+import type { IPaginationOptions } from "../../interfaces/pagination.js";
 import type { Request } from "express";
 import {
   deleteFromCloudinary,
   getCloudinaryPublicId,
   uploadImageToCloudinary,
-} from "../../utils/cloudinaryFileUploader.ts";
-import envConfig from "../../config/index.ts";
-import { fieldUpdateOptions } from "../../constraint/action.ts";
-import type { IPatientsFilterRequest } from "./patient.interfaces.ts";
-import type { PatientWhereInput } from "../../../../generated/prisma/models.ts";
-import { patientsSearchableFields } from "./patient.constraint.ts";
-import cloudinaryDirectory from "../../config/cloudinaryDirectory.ts";
+} from "../../utils/cloudinaryFileUploader.js";
+import envConfig from "../../config/index.js";
+import { fieldUpdateOptions } from "../../constraint/action.js";
+import type { IPatientsFilterRequest } from "./patient.interfaces.js";
+import type { PatientWhereInput } from "../../../../generated/prisma/models.js";
+import { patientsSearchableFields } from "./patient.constraint.js";
+import cloudinaryDirectory from "../../config/cloudinaryDirectory.js";
 
 export const createPatient = async (data: any) => {
   const hashedPassword = await bcrypt.hash(
@@ -233,15 +233,19 @@ export const updatePatient = async (
       }
       return { updatedPatient, updatedHealthRecords, uploadedMedicalReports };
     });
+  } else {
+    const updatedPatient = await prisma.patient.update({
+      where: { id },
+      data: { ...data },
+    });
+    result = { updatedPatient, updatedHealthRecords: null, uploadedMedicalReports: [] };
   }
 
   return {
-    ...result?.updatedPatient,
-    patientHealthData: result?.updatedHealthRecords,
-    medicalReports: result?.uploadedMedicalReports
-      ? result.uploadedMedicalReports
-      : [],
-  };
+    ...result.updatedPatient,
+    patientHealthData: result.updatedHealthRecords || undefined,
+    medicalReports: result.uploadedMedicalReports || [],
+  } as Patient & { patientHealthData: any; medicalReports: any[] };
 };
 
 export const deletePatient = async (id: string): Promise<Patient | null> => {

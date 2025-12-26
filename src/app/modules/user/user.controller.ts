@@ -1,10 +1,10 @@
 import type { NextFunction, Request, Response } from "express";
-import * as serviceFile from "./user.service.ts";
-import catchAsync from "../../utils/catchAsync.ts";
-import pick from "../../utils/pick.ts";
-import { userFilterableFields } from "./user.constraint.ts";
-import { paginationFields } from "../../constraint/pagination.ts";
-import { sendResponse } from "../../utils/sendResponse.ts";
+import * as serviceFile from "./user.service.js";
+import catchAsync from "../../utils/catchAsync.js";
+import pick from "../../utils/pick.js";
+import { userFilterableFields } from "./user.constraint.js";
+import { paginationFields } from "../../constraint/pagination.js";
+import { sendResponse } from "../../utils/sendResponse.js";
 import { StatusCodes } from "http-status-codes";
 
 export const createUser = async (req: Request, res: Response) => {

@@ -1,16 +1,16 @@
-import { UserRole, UserStatus } from "../../../../generated/prisma/enums.ts";
-import type { DoctorWhereInput } from "../../../../generated/prisma/models.ts";
-import { prisma } from "../../lib/prisma.ts";
+import { UserRole, UserStatus } from "../../../../generated/prisma/enums.js";
+import type { DoctorWhereInput } from "../../../../generated/prisma/models.js";
+import { prisma } from "../../lib/prisma.js";
 import bcrypt from "bcrypt";
-import { calculatePagination } from "../../utils/paginationHelper.ts";
-import type { Doctor } from "../../../../generated/prisma/client.ts";
-import type { IPaginationOptions } from "../../interfaces/pagination.ts";
+import { calculatePagination } from "../../utils/paginationHelper.js";
+import type { Doctor } from "../../../../generated/prisma/client.js";
+import type { IPaginationOptions } from "../../interfaces/pagination.js";
 import type { Request } from "express";
-import { uploadImageToCloudinary } from "../../utils/cloudinaryFileUploader.ts";
-import envConfig from "../../config/index.ts";
-import type { IDoctorFilterRequest } from "./doctor.interfaces.ts";
-import { fieldUpdateOptions } from "../../constraint/action.ts";
-import { doctorSearchableFields } from "./doctor.constraint.ts";
+import { uploadImageToCloudinary } from "../../utils/cloudinaryFileUploader.js";
+import envConfig from "../../config/index.js";
+import type { IDoctorFilterRequest } from "./doctor.interfaces.js";
+import { fieldUpdateOptions } from "../../constraint/action.js";
+import { doctorSearchableFields } from "./doctor.constraint.js";
 
 export const createDoctor = async (data: any) => {
   const hashedPassword = await bcrypt.hash(

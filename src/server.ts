@@ -1,6 +1,6 @@
 import type { Server } from "http";
-import app from "./app.ts";
-import envConfig from "./app/config/index.ts";
+import app from "./app.js";
+import envConfig from "./app/config/index.js";
 
 const port = envConfig.PORT || 5000;
 

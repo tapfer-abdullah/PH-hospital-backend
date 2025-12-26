@@ -1,14 +1,14 @@
-import type { ScheduleWhereInput } from "../../../../generated/prisma/models.ts";
-import { prisma } from "../../lib/prisma.ts";
-import { calculatePagination } from "../../utils/paginationHelper.ts";
-import type { IPaginationOptions } from "../../interfaces/pagination.ts";
+import type { ScheduleWhereInput } from "../../../../generated/prisma/models.js";
+import { prisma } from "../../lib/prisma.js";
+import { calculatePagination } from "../../utils/paginationHelper.js";
+import type { IPaginationOptions } from "../../interfaces/pagination.js";
 import type {
   IScheduleFilterRequest,
   ISchedulePayload,
-} from "./schedule.interfaces.ts";
-import { scheduleSearchableFields } from "./schedule.constraint.ts";
-import type { IToken } from "../../interfaces/token.ts";
-import { UserRole } from "../../../../generated/prisma/enums.ts";
+} from "./schedule.interfaces.js";
+import { scheduleSearchableFields } from "./schedule.constraint.js";
+import type { IToken } from "../../interfaces/token.js";
+import { UserRole } from "../../../../generated/prisma/enums.js";
 
 function setTime(datetime: Date, time: string): Date {
   const newDate = new Date(datetime);

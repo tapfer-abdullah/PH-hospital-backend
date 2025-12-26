@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
-import { verifyToken } from "../utils/jwtHelper.ts";
-import envConfig from "../config/index.ts";
-import ApiError from "../utils/ApiError.ts";
+import { verifyToken } from "../utils/jwtHelper.js";
+import envConfig from "../config/index.js";
+import ApiError from "../utils/ApiError.js";
 
 declare global {
   namespace Express {

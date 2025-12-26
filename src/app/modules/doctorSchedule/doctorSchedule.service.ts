@@ -1,12 +1,12 @@
-import type { ScheduleWhereInput } from "../../../../generated/prisma/models.ts";
-import { prisma } from "../../lib/prisma.ts";
-import { calculatePagination } from "../../utils/paginationHelper.ts";
-import type { IPaginationOptions } from "../../interfaces/pagination.ts";
-import type { IToken } from "../../interfaces/token.ts";
-import type { IDoctorScheduleFilterRequest } from "./doctorSchedule.interfaces.ts";
-import { UserRole } from "../../../../generated/prisma/enums.ts";
-import type { DoctorSchedules } from "../../../../generated/prisma/client.ts";
-import ApiError from "../../utils/ApiError.ts";
+import type { ScheduleWhereInput } from "../../../../generated/prisma/models.js";
+import { prisma } from "../../lib/prisma.js";
+import { calculatePagination } from "../../utils/paginationHelper.js";
+import type { IPaginationOptions } from "../../interfaces/pagination.js";
+import type { IToken } from "../../interfaces/token.js";
+import type { IDoctorScheduleFilterRequest } from "./doctorSchedule.interfaces.js";
+import { UserRole } from "../../../../generated/prisma/enums.js";
+import type { DoctorSchedules } from "../../../../generated/prisma/client.js";
+import ApiError from "../../utils/ApiError.js";
 import { StatusCodes } from "http-status-codes";
 
 function setTime(datetime: Date, time: string): Date {

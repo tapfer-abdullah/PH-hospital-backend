@@ -1,11 +1,11 @@
 import express from "express";
-import * as controllerFile from "./doctor.controller.ts";
-import validateRequest from "../../middlewares/validateRequest.ts";
-import { uploadFile } from "../../utils/multerFileUploader.ts";
-import parseUploadedFormData from "../../middlewares/parseUploadedFormData.ts";
-import authMiddleware from "../../middlewares/authMiddleware.ts";
-import { UserRole } from "../../../../generated/prisma/enums.ts";
-import { doctorValidationSchemas } from "./doctor.validation.ts";
+import * as controllerFile from "./doctor.controller.js";
+import validateRequest from "../../middlewares/validateRequest.js";
+import { uploadFile } from "../../utils/multerFileUploader.js";
+import parseUploadedFormData from "../../middlewares/parseUploadedFormData.js";
+import authMiddleware from "../../middlewares/authMiddleware.js";
+import { UserRole } from "../../../../generated/prisma/enums.js";
+import { doctorValidationSchemas } from "./doctor.validation.js";
 
 const route = express.Router();
 

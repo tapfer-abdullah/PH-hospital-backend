@@ -1,9 +1,9 @@
 import express from "express";
 import * as controllerFile from "./schedule.controller.js";
 import validateRequest from "../../middlewares/validateRequest.js";
-import { scheduleValidationSchemas } from "./schedule.validation.ts";
-import { UserRole } from "../../../../generated/prisma/enums.ts";
-import authMiddleware from "../../middlewares/authMiddleware.ts";
+import { scheduleValidationSchemas } from "./schedule.validation.js";
+import { UserRole } from "../../../../generated/prisma/enums.js";
+import authMiddleware from "../../middlewares/authMiddleware.js";
 
 const route = express.Router();
 

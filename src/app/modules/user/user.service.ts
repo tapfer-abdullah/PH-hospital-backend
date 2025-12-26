@@ -1,11 +1,11 @@
-import { UserRole } from "../../../../generated/prisma/enums.ts";
-import { prisma } from "../../lib/prisma.ts";
+import { UserRole } from "../../../../generated/prisma/enums.js";
+import { prisma } from "../../lib/prisma.js";
 import bcrypt from "bcrypt";
-import type { IUserFilterRequest } from "./user.interfaces.ts";
-import type { IPaginationOptions } from "../../interfaces/pagination.ts";
-import { calculatePagination } from "../../utils/paginationHelper.ts";
-import type { UserWhereInput } from "../../../../generated/prisma/models.ts";
-import { userSearchableFields } from "./user.constraint.ts";
+import type { IUserFilterRequest } from "./user.interfaces.js";
+import type { IPaginationOptions } from "../../interfaces/pagination.js";
+import { calculatePagination } from "../../utils/paginationHelper.js";
+import type { UserWhereInput } from "../../../../generated/prisma/models.js";
+import { userSearchableFields } from "./user.constraint.js";
 
 export const createUser = async (data: any) => {
   const hashedPassword = await bcrypt.hash(data.password, 10);

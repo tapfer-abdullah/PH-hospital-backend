@@ -1,11 +1,11 @@
 import type { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import * as serviceFile from "./specialty.service.ts";
-import { sendResponse } from "../../utils/sendResponse.ts";
-import catchAsync from "../../utils/catchAsync.ts";
-import pick from "../../utils/pick.ts";
-import { specialtyFilterableFields } from "./specialty.constraint.ts";
-import { paginationFields } from "../../constraint/pagination.ts";
+import * as serviceFile from "./specialty.service.js";
+import { sendResponse } from "../../utils/sendResponse.js";
+import catchAsync from "../../utils/catchAsync.js";
+import pick from "../../utils/pick.js";
+import { specialtyFilterableFields } from "./specialty.constraint.js";
+import { paginationFields } from "../../constraint/pagination.js";
 
 export const createSpecialty = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {

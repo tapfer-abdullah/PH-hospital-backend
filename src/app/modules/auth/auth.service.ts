@@ -1,12 +1,12 @@
 import bcrypt from "bcrypt";
 
-import { prisma } from "../../lib/prisma.ts";
-import { generateToken, verifyToken } from "../../utils/jwtHelper.ts";
-import { UserStatus } from "../../../../generated/prisma/enums.ts";
-import envConfig from "../../config/index.ts";
+import { prisma } from "../../lib/prisma.js";
+import { generateToken, verifyToken } from "../../utils/jwtHelper.js";
+import { UserStatus } from "../../../../generated/prisma/enums.js";
+import envConfig from "../../config/index.js";
 import type { JwtPayload } from "jsonwebtoken";
-import { createForgotPasswordMailBody } from "../../utils/generateMailBod.ts";
-import sendMail from "../../utils/sendMail.ts";
+import { createForgotPasswordMailBody } from "../../utils/generateMailBod.js";
+import sendMail from "../../utils/sendMail.js";
 
 export const refreshToken = async (token: string) => {
   const verifiedToken = verifyToken(

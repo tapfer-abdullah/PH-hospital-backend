@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
-import catchAsync from "../../utils/catchAsync.ts";
-import * as serviceFile from "./auth.service.ts";
-import { sendResponse } from "../../utils/sendResponse.ts";
+import catchAsync from "../../utils/catchAsync.js";
+import * as serviceFile from "./auth.service.js";
+import { sendResponse } from "../../utils/sendResponse.js";
 import { StatusCodes } from "http-status-codes";
-import envConfig from "../../config/index.ts";
+import envConfig from "../../config/index.js";
 
 export const refreshToken = catchAsync(async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;

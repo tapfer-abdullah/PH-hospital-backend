@@ -1,9 +1,9 @@
 import express from "express";
-import * as controllerFile from "./doctorSchedule.controller.ts";
+import * as controllerFile from "./doctorSchedule.controller.js";
 import validateRequest from "../../middlewares/validateRequest.js";
-import { doctorScheduleValidationSchemas } from "./doctorSchedule.validation.ts";
-import authMiddleware from "../../middlewares/authMiddleware.ts";
-import { UserRole } from "../../../../generated/prisma/enums.ts";
+import { doctorScheduleValidationSchemas } from "./doctorSchedule.validation.js";
+import authMiddleware from "../../middlewares/authMiddleware.js";
+import { UserRole } from "../../../../generated/prisma/enums.js";
 
 const route = express.Router();
 

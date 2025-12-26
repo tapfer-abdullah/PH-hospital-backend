@@ -1,9 +1,9 @@
 import type { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import * as serviceFile from "./admin.service.ts";
-import { sendResponse } from "../../utils/sendResponse.ts";
-import catchAsync from "../../utils/catchAsync.ts";
-import pick from "../../utils/pick.ts";
+import * as serviceFile from "./admin.service.js";
+import { sendResponse } from "../../utils/sendResponse.js";
+import catchAsync from "../../utils/catchAsync.js";
+import pick from "../../utils/pick.js";
 
 export const createAdmin = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {

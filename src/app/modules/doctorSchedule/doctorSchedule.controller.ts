@@ -1,11 +1,11 @@
 import type { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import * as serviceFile from "./doctorSchedule.service.ts";
-import { sendResponse } from "../../utils/sendResponse.ts";
-import catchAsync from "../../utils/catchAsync.ts";
-import pick from "../../utils/pick.ts";
-import { paginationFields } from "../../constraint/pagination.ts";
-import { doctorScheduleFilterableFields } from "./doctorSchedule.constraints.ts";
+import * as serviceFile from "./doctorSchedule.service.js";
+import { sendResponse } from "../../utils/sendResponse.js";
+import catchAsync from "../../utils/catchAsync.js";
+import pick from "../../utils/pick.js";
+import { paginationFields } from "../../constraint/pagination.js";
+import { doctorScheduleFilterableFields } from "./doctorSchedule.constraints.js";
 
 export const createSchedule = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
